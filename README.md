@@ -1,7 +1,7 @@
 # SOFTWARE PRONOMINALITZADOR
 
 Aquest treball fet amb python és un software que pronominalitza pronoms febles en català.
-Ha estat desenvolupat amb la llibreria Spacy i el model creat pel [BSC](https://github.com/TeMU-BSC/spacy)ç
+Ha estat desenvolupat amb la llibreria Spacy i el model creat pel [BSC](https://github.com/TeMU-BSC/spacy)
 
 ## INSTAL·LACIÓ
 
