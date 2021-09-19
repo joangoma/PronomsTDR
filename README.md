@@ -5,6 +5,6 @@ Ha estat desenvolupat amb la llibreria Spacy i el model creat pel [BSC](https://
 
 ## INSTAL·LACIÓ
 
-Per instal·lar l'Spacy s'ha de fer ús del "package manager" [pip](https://pip.pypa.io/en/stable/)
+Per instal·lar l'Spacy s'ha de fer ús del "package manager" [pip](https://pip.pypa.io/en/stable/).
 Vegeu la documentació [d'Spacy](https://spacy.io/usage)
 
