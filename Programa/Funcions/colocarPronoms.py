@@ -2,12 +2,13 @@ from Funcions.constants import PRON_BINARIES, PRONOMS, m, n
 from Funcions.funcionsVariades import apostrofar_article, arreglar_oracio, dependencies_verb, verb_auxiliar
 
 
-def pron_frase(pron, ora, tkora, binari, binCdIndet):
-    #['cp', 'hi', []]
+def pron_frase(pron, ora, tkora, binari, binCdIndet, nucliComplement):
+    #['cp', 'hi', [], [nucli]]
     comp = ["obj", "ROOT", "advmod", "obl", "NMOD", "aux"]
     s = ""
-    pro, dep, tip = pron[0][1], pron[0][-1], pron[0][0] #rebem les dades dels paràmetres
-    #print(1, pro, dep, tip)
+    pro, dep, tip = pron[0][1], pron[0][2], pron[0][0] #rebem les dades dels paràmetres
+    print(1, dep)
+
     if binari == True: pro = pro[0]
     rDep = dependencies_verb(tkora)
     per = False
@@ -25,7 +26,12 @@ def pron_frase(pron, ora, tkora, binari, binCdIndet):
         depI.append(e.i)
         dep[i] = str(e) #passem a string perquè no sigui tipus token
 
-    print(depI)
+    posNuclis = []
+
+    for i, e in enumerate(nucliComplement):
+        posNuclis.append(e.i)
+
+    print(3, depI, tip)
 
     if verb_auxiliar(tkora): aux = True #mirem si hi ha verb auxiliar
     for i, token in enumerate(tkora): #afegim el pronom a la frase i vigilem de no posar dependències ni coses que no toquen
@@ -38,9 +44,14 @@ def pron_frase(pron, ora, tkora, binari, binCdIndet):
         elif tip == 'atr1' and str(token.dep_) == 'ROOT':
             s += pro + " " + str(token.dep_)
         else:
-            if token.i not in depI and str(token.dep_) not in comp: s += str(token) + " " 
             #mirem que no estiguem afegint una dependència, un verb, o el complement
-        
+            if token.i not in depI and str(token.dep_) not in comp: 
+                s += str(token) + " "     
+            #comprovem que no s'hagi d'afegir un complement en el cas que no es puguin pronominalitzar
+            # els dos alhora        
+            elif (str(token.dep_) in comp) and (token.i not in posNuclis) and (token.i not in depI): 
+                print("es cola", token)
+                s += str(token) + " "
 
         #ajustament amb ciIndet
         if str(token.dep_) == 'ROOT' and (tip == 'cdIndet'or binCdIndet == True) and len(dep) != 0 and per == False: s += dep[0] + " "
@@ -49,9 +60,8 @@ def pron_frase(pron, ora, tkora, binari, binCdIndet):
     #s += '({0})'.format(tip)   
     s = arreglar_oracio(s)            
                                                                                                                              
-    print(s) #falta arreglar la s perquè quedi bonica :D
-    return s  
-
+    print(s) 
+    return s 
 
 
 def bin_pron_frase(pron, ora, tkora): 
@@ -63,6 +73,7 @@ def bin_pron_frase(pron, ora, tkora):
     l = ['cdDet', 'cdIndet', 'cdNeut']
 
     pr1, pr2 = pron[0], pron[1]  #pr1 = [tipusDeComp, pronom, [dependències]]
+    nucli1, nucli2 = pr1[-1][0], pr2[-1][0]
     
     indet = False
     if pr1[0] == 'cdIndet' or pr2[0] == 'cdIndet': indet = True
@@ -116,18 +127,23 @@ def bin_pron_frase(pron, ora, tkora):
     
     for token in tkora:
         if str(token.dep_) == 'aux' or str(token.dep_) == 'ROOT':
+
+            if p == []:
+                print(pron[0])
+                return pron_frase([pron[0]], str(tkora), tkora, False, indet, [nucli1]) + "/ " + pron_frase([pron[1]], str(tkora), tkora, False, indet, [nucli2]) #cas especial que no es poden pronominalitzar els dos complements alhora
+
             s = str(token)
             print(1, s)
             if s[0] in comen or s[:2] in l: 
                 if len(p[0]) > 1:
                     pT[1] = [p[0][-1]] 
                     print(pT)
-                    return pron_frase([pT], str(tkora), tkora, True, indet)
+                    return pron_frase([pT], str(tkora), tkora, True, indet, [nucli1, nucli2])
                 else:
                     pT[1] = p[0] 
                     print(pT)
-                    return pron_frase([pT], str(tkora), tkora, True, indet)
+                    return pron_frase([pT], str(tkora), tkora, True, indet, [nucli1, nucli2])
             else: 
                 pT[1] = p[0]
                 print(pT)
-                return pron_frase([pT], str(tkora), tkora, True, indet)
+                return pron_frase([pT], str(tkora), tkora, True, indet, [nucli1, nucli2])
