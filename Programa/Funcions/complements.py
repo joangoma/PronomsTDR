@@ -120,12 +120,6 @@ def atribut(par, tkpar, dep, tkora, semb):
                         l1.append(e)
                         l2.append(e)
                 l = l1
-                '''
-                if par in l:
-                    l2.pop(l.index(par))
-                    l2.append(token)
-                    l = l2
-                '''
 
     else:
         for token in tkora:
@@ -146,13 +140,14 @@ def atribut(par, tkpar, dep, tkora, semb):
     #print(dep, par)
     #miro el tipus de atr i retorno el pronom corresponent
 
-    if semb == True: 
-        atr = "atr1"
+    if semb == True: atr = "atr1"
     else : atr = "atr"
+
     proDet = ["el", "la", "els", "les", "l'"]
     ora = str(tkora)
     l = ora.split()
     p_1 = l.index(par)+1 #posició de la següent paraula al verb
+    
     if l[p_1] in proDet:
         if l[p_1] == "l'" or l[p_1] == "L'": return [atr, article_apostrofat_segons_genere(l[p_1], ora), dep] #mirem quin el gènere per tornar el pronom corresponent
         else: return [atr, l[p_1], dep]
@@ -169,15 +164,17 @@ def atribut_semblar(tkora, token):
 
 def possible_complement(tkora, token1): 
     #es comprova que el complement no sigui un complement del nom 
-    
+    l = ['obj', 'iobj', 'obl', 'cop', 'amod', 'appos', 'nsubj']
     for token in tkora:
         child = [child for child in token.children]
         for i, c in enumerate(child):
             child[i] = str(c)
 
         if token != token1 and str(token.dep_) != 'ROOT':
-            if str(token1) in child: return True
-    return False
+            if str(token1) in child and str(token1.dep_) not in l: return False
+    
+    if str(token1.dep_) not in l: return False
+    return True
 
 
 def complement_indirecte(tkpar, dep, tkora): 
@@ -226,8 +223,9 @@ def complement_regim_verbal(tkpar, dep):
     # i el pronom adeqüat per pronminalitzar el complement
      
     # print (tkpar, dep)
-
-    pr = ["a", "de", "en", "amb", "per"] #si va introduit per de, està programat a banda per no interferir
+    # si va introduit per de, està programat a banda per no interferir
+    
+    pr = ["a", "de", "en", "amb", "per"] 
     for e in dep:
         if str(e) in pr: 
             if oracio_amb_de(dep): return ["crv", "en"]

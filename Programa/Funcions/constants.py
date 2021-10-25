@@ -11,7 +11,7 @@ PRONOMS = {
     'les' : ['les', "les", '-les', "-les"],
     'li' : ['li', "li", '-li', "-li"],
     'ho' : ['ho', "ho", '-ho', "-ho"],
-    'hi' : ['hi', "hi", '-hi', "-hi"],
+    'hi' : ['hi', "hi", '-hi', "-hi"]
 }
 
 VERBS_CP = ["FER", "DIR", "ELEGIR", "NOMENAR"]
@@ -23,10 +23,10 @@ PRON_BINARIES = [[[["s'hi"], ["-s'hi"]], [["se'n", "se n'"], ["-se'n"]], [["s'ho
 [[["t'hi"], ["-t'hi"]], [["te'n", "te n'"], ["te'n"]], [["t'ho"], ["-t'ho"]], [["te les"], ["-te-les"]], [["te la", "te l'"], ["-te-la"]], [["te'ls"], ["-te'ls"]], [["te'l", "te l'"], ["-te'l"]], [["te'ls"], ["-te'ls"]], [["te li"], ["-te-li"]], [["te'ns"], ["-te'ns"]], [["te'm", "te m'"], ["-te'm"]]], 
 [[["us hi"], ["-vos-hi", "-us-hi"]], [["us en", "us n'"], ["-vos-en", "-us-en"]], [["us ho"], ["-vos-ho", "-us-ho"]], [["us les"], ["-vos-les", "-us-les"]], [["us la", "us l'"], ["-vos-la", "-us-la"]], [["us els"], ["vos-els", "-us-els"]], [["us el", "us l'"], ["-vos-el", "-us-el"]], [["us els"], ["-vos-els", "-us-els"]], [["us li"], ["-vos-li", "-us-li"]], [["us ens"], ["-vos-ens", "-us-ens"]], [["us em", "us m'"], ["-vos-em", "-us-em"]]], 
 [[["m'hi"], ["-m'hi"]], [["me'n", "me n'"], ["-me'n"]], [["m'ho"], ["-m'ho"]], [["me les"], ["me-les"]], [["me la", "me l'"], ["-me-la"]], [["me'ls"], ["-me'ls"]], [["me'l", "me l'"], ["-me'l"]], [["me'ls"], ["-me'ls"]], [["me li"], ["me-li"]]], 
-[[["ens hi"], ["-nos hi", "'ns-hi"]], [["ens en", "ens n'"], ["-nos-en", "'ns-en"]], [["ens ho"], ["-nos-ho", "'ns-ho"]], [["ens les"], ["-nos-les", "'ns-les"]], [["ens la", "ens l'"], ["-nos-la", "'ns-la"]], [["ens els"], ["-nos-els", "'ns-els"]], [["ens el"], ["-nos-el", "'ns-el"]], [["ens els"], ["-nos-els", "'ns-els"]], [["ens li"], ["-nos-li", "'ns-li"]]], 
+[[["ens hi"], ["-nos hi", "'ns-hi"]], [["ens en", "ens n'"], ["-nos-en", "'ns-en"]], [["ens ho"], ["-nos-ho", "'ns-ho"]], [["ens les"], ["-nos-les", "'ns-les"]], [["ens la", "ens l'"], ["-nos-la", "'ns-la"]], [["ens els"], ["-nos-els", "'ns-els"]], [["ens el", "ens l'"], ["-nos-el", "'ns-el"]], [["ens els"], ["-nos-els", "'ns-els"]], [["ens li"], ["-nos-li", "'ns-li"]]], 
 [[["li hi"], ["-li-hi"]], [["li'n", "li n'"], ["-li'n"]], [["li ho"], ["-li-ho"]], [["les hi"], ["-les-hi"]], [["la hi"], ["-la-hi"]], [["els hi"], ["-los-hi", "'ls-hi"]], [["l'hi"], ["-l'hi"]]], 
 [[["els hi"], ["-los hi", "'ls-hi"]], [["els en", "els n'"], ["-los-en", "'ls-en"]], [["els ho"], ["-los-ho", "'ls-ho"]], [["els les"], ["-los-les", "'ls-les"]], [["els la", "els l'"], ["-los-la", "'ls-la"]], [["els els"], ["-los-els", "'ls-els"]], [["els el", "els l'"], ["-los-el", "'ls-el"]]], 
-[[["l'hi"], ["-l'hi"]], [["le'n", "el n'"], ["-l'en"]]], 
+[[["l'hi"], ["-l'hi"]], [["l'en", "el n'"], ["-l'en"]]], 
 [[["els hi"], ["-los-hi", "'ls-hi"]], [["els en", "els n'"], ["-los-en", "'ls-en"]]], 
 [[["la hi"], ["-la-hi"]], [["la'n", "la n'"], ["-la'n"]]], 
 [[["les hi"], ["-les-hi"]], [["les en", "les n'"], ["-les-en"]]], 

@@ -1,5 +1,6 @@
 from Funcions.constants import PRON_BINARIES, PRONOMS, m, n
 from Funcions.funcionsVariades import apostrofar_article, arreglar_oracio, dependencies_verb, verb_auxiliar
+from Funcions.funcionsVariades import cal_apostrofar_bin
 
 
 def pron_frase(pron, ora, tkora, binari, binCdIndet, nucliComplement):
@@ -9,7 +10,18 @@ def pron_frase(pron, ora, tkora, binari, binCdIndet, nucliComplement):
     pro, dep, tip = pron[0][1], pron[0][2], pron[0][0] #rebem les dades dels paràmetres
     print(1, dep)
 
-    if binari == True: pro = pro[0]
+    print(0, pro)
+    
+    if binari == True and cal_apostrofar_bin(tkora) and (len(pro) > 1): pro = pro[1]
+    elif len(pro) > 1 and binari == True: pro = pro[0]
+    elif binari == True: pro = pro[0]
+    
+
+    if binari == False: 
+        pro = apostrofar_article(pro, tkora, tip)
+    
+    print(1, pro)
+
     rDep = dependencies_verb(tkora)
     per = False
 
@@ -17,10 +29,9 @@ def pron_frase(pron, ora, tkora, binari, binCdIndet, nucliComplement):
     cop = False
     if tip == "atr": cop = True 
     if str(rDep[-1].dep_) == 'xcomp': per = True
+    
     aux = False
-    print(0, pro)
-    if binari == False: pro = apostrofar_article(pro, tkora, tip)
-    print(1, pro)
+
     depI = []
     for i, e in enumerate(dep): 
         depI.append(e.i)
@@ -29,7 +40,7 @@ def pron_frase(pron, ora, tkora, binari, binCdIndet, nucliComplement):
     posNuclis = []
 
     for i, e in enumerate(nucliComplement):
-        posNuclis.append(e.i)
+        if str(e) != "": posNuclis.append(e.i)
 
     print(3, depI, tip)
 
@@ -49,7 +60,7 @@ def pron_frase(pron, ora, tkora, binari, binCdIndet, nucliComplement):
                 s += str(token) + " "     
             #comprovem que no s'hagi d'afegir un complement en el cas que no es puguin pronominalitzar
             # els dos alhora        
-            elif (str(token.dep_) in comp) and (token.i not in posNuclis) and (token.i not in depI): 
+            elif (str(token.dep_) in comp) and (token.i not in posNuclis) and (token.i not in depI) and (str(token.dep_) != "ROOT") and tip != "atr" and tip != "atr1": 
                 print("es cola", token)
                 s += str(token) + " "
 
@@ -77,6 +88,9 @@ def bin_pron_frase(pron, ora, tkora):
     
     indet = False
     if pr1[0] == 'cdIndet' or pr2[0] == 'cdIndet': indet = True
+    
+    if pr1[0] == 'cdIndet' and pr1[-2] == []: indet = False
+    if pr2[0] == 'cdIndet' and pr2[-2] == []: indet = False
 
     if pr1[0] in l and pr1[1] == "els": pr1[1] = "els (cd)"
     if pr2[0] in l and pr2[1] == "els": pr2[1] = "els (cd)"
@@ -114,9 +128,8 @@ def bin_pron_frase(pron, ora, tkora):
     depT = pr1[2] + pr2[2]
 
     print(m1, n2, " ", m2, n1)
-
-    if n2 < len(PRON_BINARIES[m1]): p = PRON_BINARIES[m1][n2]
-    elif n1 < len(PRON_BINARIES[m2]): p = PRON_BINARIES[m2][n1]
+    if n2 < len(PRON_BINARIES[m1]) and n2 != -1 and m1 != -1: p = PRON_BINARIES[m1][n2]
+    elif n1 < len(PRON_BINARIES[m2]) and n1 != -1 and m2 != -1: p = PRON_BINARIES[m2][n1]
     
     #p[0] és davant el verb, i p[1] darrere
     comen = ['a', 'e', 'i', 'o', 'u','ha', 'he', 'hi', 'ho', 'hu', 'é', 'à', 'ú', 'ò', 'í', 'ó']
