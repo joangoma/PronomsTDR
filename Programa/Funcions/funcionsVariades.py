@@ -1,5 +1,16 @@
 from Funcions.constants import VERBS_CONJUGATS
 
+def cal_apostrofar_bin(tkora):
+    l = ['a', 'e', 'i', 'o', 'u','ha', 'he', 'hi', 'ho', 'hu', 'é', 'à', 'ú', 'ò', 'í', 'ó']
+    for token in tkora:
+        if str(token.dep_) == 'aux' or str(token.dep_) == 'ROOT':
+            s = str(token)
+            print(1, s)
+            if s[0] in l or s[:2] in l:
+                return True
+            else: return False
+            
+
 def apostrofar (obj):
     if obj in ["el", "la"]: return "l'"
     elif obj == 'en': return "n'"
@@ -114,3 +125,8 @@ def modificar_dependencies (tkora, child, token):
             i += 1
 
     return child
+
+def eliminar_llistes_buides (pr):
+    for i, e in enumerate (pr):
+        if e[0] == [] or e == [] or e == [[]] or e == [[[]]]: pr.pop(i)
+    return pr
