@@ -5,7 +5,7 @@ from Funcions.funcionsVariades import cal_apostrofar_bin
 
 def pron_frase(pron, ora, tkora, binari, binCdIndet, nucliComplement):
     #['cp', 'hi', [], [nucli]]
-    comp = ["obj", "ROOT", "advmod", "obl", "NMOD", "aux"]
+    comp = ["obj", "ROOT", "advmod", "obl", "NMOD", "aux", "amod", 'appos']
     s = ""
     pro, dep, tip = pron[0][1], pron[0][2], pron[0][0] #rebem les dades dels paràmetres
     print(1, dep)

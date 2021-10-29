@@ -2,25 +2,30 @@ from Funcions.constants import VERBS_CONJUGATS
 from Funcions.funcionsVariades import article_apostrofat_segons_genere, dependencies_completes, dependencies_verb, oracio_amb_de
 
 
-def complement_directe(par, tkpar, dep, tkora):
+def complement_directe(tkpar, dep, tkora):
     # funció que determina si un complement és DIRECTE, 
     # i el pronom adeqüat per pronminalitzar el complement
 
-    cdDet = ["el", "la", "els", "les", "l'", "aquest", "aquests", "aquestes", "aquesta", "aquell", "aquella", "aquells", "aquelles"]
+    cdDet = ["el", "la", "els", "les", "l'", "aquest", "aquests", 
+            "aquestes", "aquesta", "aquell", "aquella", "aquells", "aquelles"]
     proDet = ["el", "la", "els", "les", "l'"]
-    demostr = ["aquest", "aquesta", "aquests", "aquestes", "aquell", "aquella", "aquells", "aquelles"]
+    demostr = ["aquest", "aquesta", "aquests", "aquestes", 
+               "aquell", "aquella", "aquells", "aquelles"]
     
     cdNeut = ["això", "allò"]
     
-    quant = ["massa", "força", "prou", "més", "menys", "gens", "bastant", "bastants", "gaire", "gaires", 
-             "quant", "quanta", "quants", "quantes", "tant", "tanta", "tants", "molt", "molta", "molts", 
-             "moltes", "poc", "poca", "pocs", "poques"]
+    quant = ["massa", "força", "prou", "més", "menys", "gens", 
+             "bastant", "bastants", "gaire", "gaires", 
+             "quant", "quanta", "quants", "quantes", "tant", "tanta", 
+             "tants", "molt", "molta", "molts", 
+             "moltes", "moltíssimes", "poc", "poca", "pocs", "poques"]    
+
     indef = ["un", "una", "uns", "unes"]
+
     prp = ['a', 'per']
-    morph = ['NOUN']
-    
     l = ["FER", "DIR", "ELEGIR", "NOMENAR"]
-    
+    morph = ['NOUN']
+
     verb = ""
     for token in tkora:
         if str(token.dep_) == "aux": verb += str(token) + " "
@@ -29,9 +34,11 @@ def complement_directe(par, tkpar, dep, tkora):
     for e in l:
         if verb in VERBS_CONJUGATS[e] and tkpar.pos_ == "ADJ": return []
 
+    if str(tkpar) in prp: return [] #si la paraula és una preposicó, es descarta automaticament
+
     ora = str(tkora)
     # 1r cas: comprovació del cd neutre + retornar pronom ho
-    if par in cdNeut: return ['cdNeut', 'ho'] 
+    if str(tkpar) in cdNeut: return ['cdNeut', 'ho'] 
 
     #2n cas: comprovació si el cd és determinat + retorno el pronom corresponent
     if len(dep) != 0:
@@ -44,16 +51,18 @@ def complement_directe(par, tkpar, dep, tkora):
                     if s in e: 
                         l.remove(e)
                         l += e.split(s)
-            if l[l.index(str(par))-len(dep)-1] in prp: return []
+            if l[l.index(str(tkpar))-len(dep)-1] in prp: return []
             if str(dep[0]) in demostr: 
-                if demostr.index(str(dep[0])) > 3: return ['cdDet', proDet[demostr.index(str(dep[0]))-4]]
-                else: return ['cdDet', proDet[demostr.index(str(dep[0]))]]
+                if demostr.index(str(dep[0])) > 3: 
+                    return ['cdDet', proDet[demostr.index(str(dep[0]))-4]]
+                else: 
+                    return ['cdDet', proDet[demostr.index(str(dep[0]))]]
             else:
                 # es mira el gènere del nucli del complement respectiu per saber el gènere
-                if str(dep[0]) == "l'" or str(dep[0]) == "L'": return ['cdDet', article_apostrofat_segons_genere(str(dep[0]), ora)] 
-                else: return ['cdDet', str(dep[0])]
-
-    if str(tkpar) in prp: return [] #si la paraula és una preposicó, es descarta automaticament
+                if str(dep[0]) == "l'" or str(dep[0]) == "L'": 
+                    return ['cdDet', article_apostrofat_segons_genere(str(dep[0]), ora)] 
+                else: 
+                    return ['cdDet', str(dep[0])]
 
     # 3r pas: comprovació si el cd és indeterminat + retornar pronom corresponent
     # + retornar numeral si es necessita
@@ -75,7 +84,6 @@ def complement_predicatiu(tkpar, dep, tkora):
     # no funciona 
     
     l = ["FER", "DIR", "ELEGIR", "NOMENAR"]
-    pron = dependencies_completes(dep)
     verb = ""
     for token in tkora:
         if str(token.dep_) == "aux": verb += str(token) + " "
@@ -88,15 +96,15 @@ def complement_predicatiu(tkpar, dep, tkora):
         if verb in VERBS_CONJUGATS[e]:
             if e == "FER" or e == "DIR":
                 if str(tkpar.pos_) == 'NOUN': return []
-                return ['cp', 'en', pron] #diria que s'ha de comprovar alguna altra cosa
+                return ['cp', 'en'] #diria que s'ha de comprovar alguna altra cosa
             elif e == "ELEGIR" or e == "NOMENAR":
-                return ['cp', 'en', pron]
+                return ['cp', 'en']
 
     if t == False:
         if str(tkpar.pos_) == 'ADJ' and len(dep) != 0: #comprovem que tingui antecedent
-            if str(dep[0]) == 'de' or str(dep[0]) == 'd': return ['cp', 'en', pron]
+            if str(dep[0]) == 'de' or str(dep[0]) == 'd': return ['cp', 'en']
         if str(tkpar.pos_) == 'ADJ': 
-            return ['cp','hi', pron]
+            return ['cp','hi']
 
     
     return []
@@ -243,6 +251,8 @@ def complement_circumstancial(par):
 
     if str(par.dep_) in l: return True
     else: return False
+
+
 
 
 
