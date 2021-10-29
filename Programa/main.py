@@ -12,7 +12,7 @@ nlp = spacy.load("ca_base_web_trf")
 
 def possiblitat_comp_obj(par, tkpar, dep, ora, tkora):
     pron = []
-    pron = complement_directe(par, tkpar, dep, tkora)
+    pron = complement_directe(tkpar, dep, tkora)
     if pron == []: pron = complement_predicatiu(tkpar, dep, tkora)
     if pron == []: pron = complement_indirecte(tkpar, dep, tkora)
     if pron == []: pron = complement_regim_verbal(tkpar, dep)
@@ -50,6 +50,7 @@ def main(s):
                         l.append(el)
                         print(1, l)
                         t = False
+                        print("obj")
 
                 elif str(token.dep_) == 'cop' and t == True: 
                     el = atribut(str(token), token, child, tkora, False)
@@ -67,13 +68,15 @@ def main(s):
                     el = complement_predicatiu(token, child, tkora)
                     if el != []:
                         l.append(el)
+                        l[-1].append(dependencies_completes(child))
                         print(l)
                         t = False
 
                 elif str(token.dep_) == "obl" and t == True:
-                    el = complement_indirecte(token, child, s) + [child]
+                    el = complement_indirecte(token, child, tkora)
                     if el != []:
                         l.append(el)
+                        l[-1].append([child])
                         t = False
                 else:
                     pass
@@ -82,7 +85,7 @@ def main(s):
                     #     l.append(["-", "de", child])
                     #     print(l)
                     #cosa random per mirar si el complement està introduit per de substituir en
-                    
+            print(l)
             if t == False and l[-1][0] != 'pron':
                 l[-1].append([token])
 
