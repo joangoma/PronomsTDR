@@ -17,11 +17,12 @@ def apostrofar (obj):
     elif obj == 'es': return "s'"
     elif obj == "et": return "t'"
     elif obj == "em": return "m'"
+    elif obj == "li": return "l'"
 
 def apostrofar_article (obj, tkora, tip):
     #és una funció molt incompleta falta feina
     l = ['a', 'e', 'i', 'o', 'u','ha', 'he', 'hi', 'ho', 'hu', 'é', 'à', 'ú', 'ò', 'í', 'ó']
-    pron = ["el", "la", "en", "es", "et", "em"]
+    pron = ["el", "la", "en", "es", "et", "em", "li"]
     if obj in pron:
         if tip == 'atr':
             for token in tkora:
@@ -130,3 +131,21 @@ def eliminar_llistes_buides (pr):
     for i, e in enumerate (pr):
         if e[0] == [] or e == [] or e == [[]] or e == [[[]]]: pr.pop(i)
     return pr
+ 
+def eliminar_complements_falsos (pr):
+    l = pr
+    indx = []
+    for i, e in enumerate(pr):
+        ch = e[-2] 
+        ch1 = []
+        for e in ch:
+            ch1.append(str(e))
+        for j, el in enumerate(pr):
+            if j != i:
+                if str(el[-1][0]) in ch1: indx.append(j)
+
+    for e in indx:
+        l.pop(e)
+        indx.remove(e)
+
+    return l
