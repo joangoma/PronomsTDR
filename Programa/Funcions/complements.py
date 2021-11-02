@@ -188,7 +188,7 @@ def possible_complement(tkora, token1):
 
 
 def complement_indirecte(tkpar, dep, tkora): 
-    # funció que determina si un complement és un ATRIBUT, 
+    # funció que determina si un complement és un COMPLEMENT INDIRECTE, 
     # i el pronom adeqüat per pronminalitzar el complement
 
     #PROBLEMA: he escrit una carta al diari != he escrit una carta al pere
@@ -197,6 +197,7 @@ def complement_indirecte(tkpar, dep, tkora):
     prp = ['a', 'per', 'al', 'als']
     sig = ["'", "-"]
     t = False
+
     l = str(tkora).split()
     for e in l:
         for s in sig:
