@@ -3,10 +3,10 @@ import spacy
 from Funcions.constants import *
 from thinc.config import deep_merge_configs
 from Funcions.complements import *
-from Funcions.funcionsVariades import arreglar_oracio
 from Funcions.colocarPronoms import *
 from Funcions.constants import PRONOMS
-from Funcions.funcionsVariades import eliminar_llistes_buides
+from Funcions.funcionsVariades import eliminar_llistes_buides, eliminar_complements_falsos, arreglar_oracio
+
 
 nlp = spacy.load("ca_base_web_trf")
 
@@ -44,6 +44,7 @@ def main(s):
             el = []
 
             if t == True:
+                print(1)
                 if str(token.dep_) == 'obj' and t == True: 
                     el = possiblitat_comp_obj(str(token), token, child, s, tkora)
                     if el != []:
@@ -51,26 +52,27 @@ def main(s):
                         print(1, l)
                         t = False
                         print("obj")
-
+                    print(2)
                 elif str(token.dep_) == 'cop' and t == True: 
                     el = atribut(str(token), token, child, tkora, False)
                     if el != []:
                         l.append(el)
                         t = False
-
-                elif str(token.dep_) == 'ROOT' and atribut_semblar(nlp(s), token) and t == True: 
+                    print(3)
+                elif str(token.dep_) == 'ROOT' and atribut_semblar(nlp(s), token): 
+                    print("eo")
                     el = atribut(str(token), token, child, tkora, True)
                     if el != []:
                         l.append(el)
                         t = False
-
-                elif str(token.dep_) in cpp and t == True:
-                    el = complement_predicatiu(token, child, tkora)
-                    if el != []:
-                        l.append(el)
-                        l[-1].append(dependencies_completes(child))
-                        print(l)
-                        t = False
+            
+                # elif str(token.dep_) in cpp and t == True:
+                #     el = complement_predicatiu(token, child, tkora)
+                #     if el != []:
+                #         l.append(el)
+                #         l[-1].append(dependencies_completes(child))
+                #         print(l)
+                #         t = False
 
                 elif str(token.dep_) == "obl" and t == True:
                     el = complement_indirecte(token, child, tkora)
@@ -94,7 +96,6 @@ def main(s):
             #if t == True and pos_cc(token): l.append(['cc', 'hi', child])
             
         t = True
-        v = False
 
 
     # l = [tipusDeComp, pronom, [dependències]]
@@ -102,6 +103,9 @@ def main(s):
     print(l)
 
     l = eliminar_llistes_buides(l)
+    l = eliminar_complements_falsos(l)
+    
+    print(l)
 
     frase=""
     if len(l) == 1 and l[0][0] == "pron": 

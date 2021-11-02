@@ -43,14 +43,16 @@ def complement_directe(tkpar, dep, tkora):
     #2n cas: comprovació si el cd és determinat + retorno el pronom corresponent
     if len(dep) != 0:
         if str(dep[0]) in cdDet: 
-            sig = ["'", "-"]
             t = False
+            
+            sig = ["'", "-"]
             l = ora.split()
             for e in l:
                 for s in sig:
                     if s in e: 
                         l.remove(e)
                         l += e.split(s)
+
             if l[l.index(str(tkpar))-len(dep)-1] in prp: return []
             if str(dep[0]) in demostr: 
                 if demostr.index(str(dep[0])) > 3: 
@@ -67,10 +69,10 @@ def complement_directe(tkpar, dep, tkora):
     # 3r pas: comprovació si el cd és indeterminat + retornar pronom corresponent
     # + retornar numeral si es necessita
     t = 0
-    if str(tkpar.pos_) in morph and dep == []: t = 1
-    elif str(tkpar.pos_) in morph and str(dep[0]) in indef: t = 1
-    elif str(tkpar.pos_) in morph and str(dep[0]) in quant: t = 1
-    elif str(tkpar.pos_) in morph and str(dep[0].pos_) == 'NUM': t = 1
+    if str(tkpar.pos_) == "NOUN" and dep == []: t = 1
+    if str(tkpar.pos_) == "NOUN" and str(dep[0]) in indef: t = 1
+    if str(tkpar.pos_) == "NOUN" and str(dep[0]) in quant: t = 1
+    if str(tkpar.pos_) == "NOUN" and str(dep[0].pos_) == 'NUM': t = 1
     if t == 1: return ['cdIndet', 'en']
             
     return []
@@ -172,7 +174,7 @@ def atribut_semblar(tkora, token):
 
 def possible_complement(tkora, token1): 
     #es comprova que el complement no sigui un complement del nom 
-    l = ['obj', 'iobj', 'obl', 'cop', 'amod', 'appos', 'nsubj']
+    l = ['obj', 'iobj', 'obl', 'cop', 'amod', 'appos', 'ROOT']
     for token in tkora:
         child = [child for child in token.children]
         for i, c in enumerate(child):
