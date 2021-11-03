@@ -62,7 +62,7 @@ def complement_directe(tkpar, dep, tkora):
             else:
                 # es mira el gènere del nucli del complement respectiu per saber el gènere
                 if str(dep[0]) == "l'" or str(dep[0]) == "L'": 
-                    return ['cdDet', article_apostrofat_segons_genere(str(dep[0]), ora)] 
+                    return ['cdDet', article_apostrofat_segons_genere(str(dep[0]), tkora)] 
                 else: 
                     return ['cdDet', str(dep[0])]
 
@@ -112,7 +112,7 @@ def complement_predicatiu(tkpar, dep, tkora):
     return []
 
 
-def atribut(par, tkpar, dep, tkora, semb):
+def atribut(tkpar, tkora, semb):
     # funció que determina si un complement és un ATRIBUT, 
     # i el pronom adeqüat per pronminalitzar el complement
 
@@ -124,11 +124,9 @@ def atribut(par, tkpar, dep, tkora, semb):
             if token.dep_ == 'ROOT':
                 l = [child for child in token.children]
                 l1 = []
-                l2 = [child for child in token.children]
                 for i, e in enumerate(l):
                     if str(e.dep_) != 'nsubj':
                         l1.append(e)
-                        l2.append(e)
                 l = l1
 
     else:
@@ -153,14 +151,24 @@ def atribut(par, tkpar, dep, tkora, semb):
     if semb == True: atr = "atr1"
     else : atr = "atr"
 
-    proDet = ["el", "la", "els", "les", "l'"]
+    proDet = ["el", "la", "els", "les", "l'", "L'"]
     ora = str(tkora)
+
+    sig = ["'", "-"]
     l = ora.split()
-    p_1 = l.index(par)+1 #posició de la següent paraula al verb
-    
-    if l[p_1] in proDet:
-        if l[p_1] == "l'" or l[p_1] == "L'": return [atr, article_apostrofat_segons_genere(l[p_1], ora), dep] #mirem quin el gènere per tornar el pronom corresponent
-        else: return [atr, l[p_1], dep]
+    for e in l:
+        for s in sig:
+            if s in e: 
+                l.remove(e)
+                l += e.split(s)
+
+    p_1 = l.index(str(tkpar))+1 #posició de la següent paraula al verb
+
+    if str(tkora[p_1]) in proDet:
+        if str(tkora[p_1]) == "l'" or str(tkora[p_1]) == "L'": 
+            return [atr, article_apostrofat_segons_genere(str(tkora[p_1]), tkora), dep] #mirem quin el gènere per tornar el pronom corresponent
+        else: 
+            return [atr, str(tkora[p_1]), dep]
     else:
         return [atr, 'ho', dep]
 
@@ -194,7 +202,8 @@ def complement_indirecte(tkpar, dep, tkora):
     #PROBLEMA: he escrit una carta al diari != he escrit una carta al pere
     print(tkpar)
     pr = ['a', 'al', 'als', 'per a', 'per al', 'per als', 'per la', 'per les', "per l'", 'a el', 'a la', 'a els', 'a les', 'per a el', 'per a la', 'per a els', 'per a les']
-    prp = ['a', 'per', 'al', 'als']
+    prp = ['a', 'per', 'al', 'als', 'pel', 'pels']
+    
     sig = ["'", "-"]
     t = False
 
@@ -213,12 +222,15 @@ def complement_indirecte(tkpar, dep, tkora):
     if len(dep) >= 1:
         if l.index(str(tkpar))-len(dep)-1 >= 0:
             if l[l.index(str(tkpar))-len(dep)-1] in prp: t = True
-        elif str(dep[0].dep_) != 'case': return[]
-        l = str(tkpar.morph).split('|')
-        print(2, l)
+        if str(dep[0].dep_) != 'case': return[]
+
         s = ""
         for e in dep: s += str(e) + " " #estic passant a string una llista amb les dependències del ci
         s = s[:-1]
+
+        l = str(tkpar.morph).split('|')
+        print(2, l)
+        
         if str(dep[0]) in prp or t:
             for e in l:
                 ml = e.split('=')
