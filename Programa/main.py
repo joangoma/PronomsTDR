@@ -54,14 +54,14 @@ def main(s):
                         print("obj")
                     print(2)
                 elif str(token.dep_) == 'cop' and t == True: 
-                    el = atribut(str(token), token, child, tkora, False)
+                    el = atribut( token, tkora, False)
                     if el != []:
                         l.append(el)
                         t = False
                     print(3)
                 elif str(token.dep_) == 'ROOT' and atribut_semblar(nlp(s), token): 
                     print("eo")
-                    el = atribut(str(token), token, child, tkora, True)
+                    el = atribut(token, tkora, True)
                     if el != []:
                         l.append(el)
                         t = False
