@@ -38,7 +38,7 @@ def main(s):
 
         if possible_complement(nlp(s), token) == True and t == True:
             for e in PRONOMS.keys():
-                if str(token) in PRONOMS[e]:
+                if str(token) in PRONOMS[e] and t == True:
                     l.append(['pron', str(token), child, [token]])
                     t = False
             el = []
