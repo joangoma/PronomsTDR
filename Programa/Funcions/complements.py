@@ -1,4 +1,4 @@
-from Funcions.constants import VERBS_CONJUGATS
+from Funcions.constants import VERBS_CONJUGATS, VERBS_CP
 from Funcions.funcionsVariades import article_apostrofat_segons_genere, dependencies_completes, dependencies_verb, oracio_amb_de
 
 
@@ -31,8 +31,8 @@ def complement_directe(tkpar, dep, tkora):
         if str(token.dep_) == "aux": verb += str(token) + " "
         if str(token.dep_) == "ROOT": verb += str(token)
     
-    for e in l:
-        if verb in VERBS_CONJUGATS[e] and tkpar.pos_ == "ADJ": return []
+    # for e in l:
+    #     if verb in VERBS_CONJUGATS[e] and tkpar.pos_ == "NOUN": return []
 
     if str(tkpar) in prp: return [] #si la paraula és una preposicó, es descarta automaticament
 
@@ -70,9 +70,10 @@ def complement_directe(tkpar, dep, tkora):
     # + retornar numeral si es necessita
     t = 0
     if str(tkpar.pos_) == "NOUN" and dep == []: t = 1
-    if str(tkpar.pos_) == "NOUN" and str(dep[0]) in indef: t = 1
-    if str(tkpar.pos_) == "NOUN" and str(dep[0]) in quant: t = 1
-    if str(tkpar.pos_) == "NOUN" and str(dep[0].pos_) == 'NUM': t = 1
+    elif str(tkpar.pos_) == "NOUN" and str(dep[0]) in indef: t = 1
+    elif str(tkpar.pos_) == "NOUN" and str(dep[0]) in quant: t = 1
+    elif str(tkpar.pos_) == "NOUN" and str(dep[0].pos_) == 'NUM': t = 1
+    
     if t == 1: return ['cdIndet', 'en']
             
     return []
@@ -84,8 +85,7 @@ def complement_predicatiu(tkpar, dep, tkora):
 
     # ALERTA: excepccio fer-se, dir-se, elegir, nomenar 
     # no funciona 
-    
-    l = ["FER", "DIR", "ELEGIR", "NOMENAR"]
+
     verb = ""
     for token in tkora:
         if str(token.dep_) == "aux": verb += str(token) + " "
@@ -93,20 +93,18 @@ def complement_predicatiu(tkpar, dep, tkora):
     
     
     # això no funciona
-    t = False
-    for e in l:
+    for e in VERBS_CP:   
         if verb in VERBS_CONJUGATS[e]:
             if e == "FER" or e == "DIR":
                 if str(tkpar.pos_) == 'NOUN': return []
                 return ['cp', 'en'] #diria que s'ha de comprovar alguna altra cosa
             elif e == "ELEGIR" or e == "NOMENAR":
                 return ['cp', 'en']
-
-    if t == False:
-        if str(tkpar.pos_) == 'ADJ' and len(dep) != 0: #comprovem que tingui antecedent
-            if str(dep[0]) == 'de' or str(dep[0]) == 'd': return ['cp', 'en']
-        if str(tkpar.pos_) == 'ADJ': 
-            return ['cp','hi']
+    # això sí
+    if str(tkpar.pos_) == 'ADJ' and len(dep) > 0: #comprovem que tingui antecedent
+        if str(dep[0]) == 'de' or str(dep[0]) == 'd': return ['cp', 'en']
+    if str(tkpar.pos_) == 'ADJ': 
+        return ['cp','hi']
 
     
     return []
