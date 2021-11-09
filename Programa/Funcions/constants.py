@@ -16,9 +16,6 @@ PRONOMS = {
 
 VERBS_CP = ["FER", "DIR", "ELEGIR", "NOMENAR"]
 
-m = ["es", "et", "us", "em", "ens", "li", "els (ci)", "el", "els (cd)", "la", "les", "en"]
-n = ["hi", "en", "ho", "les", "la", "els (cd)", "el", "els (ci)", "li", "ens", "em", "us", "et"]
-
 PRON_BINARIES = [[[["s'hi"], ["-s'hi"]], [["se'n", "se n'"], ["-se'n"]], [["s'ho"], ["-s'ho"]], [["se les"], ["-se-les"]], [["se la", "se l'"], ["-se-la"]], [["se'ls"], ["-se'ls"]], [["se'ls"], ["-se'ls"]], [["se'ls"], ["-se'ls"]], [["se li"], ["-se-li"]], [["se'ns"], ["-se'ns"]], [["se'm", "se m'"], ["-se'm"]], [["se us"], ["-se-us"]], [["se't", "se t'"], ["-se't"]]], 
 [[["t'hi"], ["-t'hi"]], [["te'n", "te n'"], ["te'n"]], [["t'ho"], ["-t'ho"]], [["te les"], ["-te-les"]], [["te la", "te l'"], ["-te-la"]], [["te'ls"], ["-te'ls"]], [["te'l", "te l'"], ["-te'l"]], [["te'ls"], ["-te'ls"]], [["te li"], ["-te-li"]], [["te'ns"], ["-te'ns"]], [["te'm", "te m'"], ["-te'm"]]], 
 [[["us hi"], ["-vos-hi", "-us-hi"]], [["us en", "us n'"], ["-vos-en", "-us-en"]], [["us ho"], ["-vos-ho", "-us-ho"]], [["us les"], ["-vos-les", "-us-les"]], [["us la", "us l'"], ["-vos-la", "-us-la"]], [["us els"], ["vos-els", "-us-els"]], [["us el", "us l'"], ["-vos-el", "-us-el"]], [["us els"], ["-vos-els", "-us-els"]], [["us li"], ["-vos-li", "-us-li"]], [["us ens"], ["-vos-ens", "-us-ens"]], [["us em", "us m'"], ["-vos-em", "-us-em"]]], 

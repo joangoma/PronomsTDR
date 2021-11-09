@@ -1,4 +1,4 @@
-from Funcions.constants import PRON_BINARIES, PRONOMS, m, n
+from Funcions.constants import PRON_BINARIES, PRONOMS
 from Funcions.funcionsVariades import apostrofar_article, arreglar_oracio, dependencies_verb, verb_auxiliar
 from Funcions.funcionsVariades import cal_apostrofar_bin
 
@@ -75,15 +75,19 @@ def pron_frase(pron, ora, tkora, binari, binCdIndet, nucliComplement):
     return s 
 
 
-def bin_pron_frase(pron, ora, tkora): 
+def bin_pron_frase(pron, tkora): 
     #funció que retorna una llista amb les quatre combinacions possibles dels pronoms
     # retorna una llista semblant a aquesta:
     # [prnom forma reforçada, pronom forma elidida, 
     # pronom forma plena, pronom forma reduïda]
 
     l = ['cdDet', 'cdIndet', 'cdNeut']
+    m = ["es", "et", "us", "em", "ens", "li", 
+    "els (ci)", "el", "els (cd)", "la", "les", "en"]
+    n = ["hi", "en", "ho", "les", "la", "els (cd)", 
+    "el", "els (ci)", "li", "ens", "em", "us", "et"]
 
-    pr1, pr2 = pron[0], pron[1]  #pr1 = [tipusDeComp, pronom, [dependències]]
+    pr1, pr2 = pron[0], pron[1]  #pr1 = [tipusDeComp, pronom, [dependències], nucli]
     nucli1, nucli2 = pr1[-1][0], pr2[-1][0]
     
     indet = False
@@ -107,6 +111,11 @@ def bin_pron_frase(pron, ora, tkora):
         if pr1[0] in l: pr2[1] = "els (ci)"
         elif pr1[0] == "ci": pr2[1] = "els (cd)"
 
+    #
+    # CODI QUE AJUSTA ELS PROMS "ELS"
+    #
+
+
     l = ["els (cd)", "els (ci)"]
 
     for e in PRONOMS.keys():
@@ -125,15 +134,15 @@ def bin_pron_frase(pron, ora, tkora):
     if pr1[1] in n: n1 = n.index(pr1[1])
     if pr2[1] in n: n2 = n.index(pr2[1])
 
-    depT = pr1[2] + pr2[2]
-
     print(m1, n2, " ", m2, n1)
-    if n2 < len(PRON_BINARIES[m1]) and n2 != -1 and m1 != -1: p = PRON_BINARIES[m1][n2]
-    elif n1 < len(PRON_BINARIES[m2]) and n1 != -1 and m2 != -1: p = PRON_BINARIES[m2][n1]
+    if n2 < len(PRON_BINARIES[m1]) and n2 != -1 and m1 != -1: 
+        p = PRON_BINARIES[m1][n2]
+    elif n1 < len(PRON_BINARIES[m2]) and n1 != -1 and m2 != -1: 
+        p = PRON_BINARIES[m2][n1]
     
     #p[0] és davant el verb, i p[1] darrere
     comen = ['a', 'e', 'i', 'o', 'u','ha', 'he', 'hi', 'ho', 'hu', 'é', 'à', 'ú', 'ò', 'í', 'ó']
-
+    depT = pr1[2] + pr2[2]
     pT = ["bin", " ", depT]
 
     print(p, pT)

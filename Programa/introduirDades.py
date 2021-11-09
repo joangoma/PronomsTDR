@@ -1,5 +1,6 @@
 import re
 import spacy
+from spacy import displacy
 from Funcions.constants import *
 from thinc.config import deep_merge_configs
 from Funcions.complements import *
@@ -29,6 +30,7 @@ def main(s):
     l = []
     t, v = True, False 
     tkora = nlp(s)
+    print(tkora)
     for i, token in enumerate(tkora):
         child = [child for child in token.children]
         #print("inicial", child)
@@ -38,7 +40,7 @@ def main(s):
 
         if possible_complement(nlp(s), token) == True and t == True:
             for e in PRONOMS.keys():
-                if str(token) in PRONOMS[e]:
+                if str(token) in PRONOMS[e] and t == True:
                     l.append(['pron', str(token), child, [token]])
                     t = False
             el = []
@@ -114,7 +116,7 @@ def main(s):
         if (len(l) == 1 and l[0] == "res") == False:
             if 'res' in l: l.pop(l.index('res'))
             if len(l) == 1: frase = pron_frase(l, s, nlp(s), False, False, l[0][-1])
-            elif len(l) == 2: frase = bin_pron_frase(l, s, nlp(s))
+            elif len(l) == 2: frase = bin_pron_frase(l, nlp(s))
             else: frase = s
             #print(l)
         else: print("NO HE TROBAT RES A PRONOMINALITZAR EN AQUESTA FRASE")
@@ -127,7 +129,10 @@ def nova_S(s):
     if s1[-1] == '.': s1 = s1[:-1]
     return s1
 
-
+def return_svg(frase):
+    doc = nlp(frase)
+    return displacy.render(doc, style="dep")
+    
 def entrada(s):
     if str(s) == "None": return "None"
     l = s.split()
@@ -138,6 +143,7 @@ def entrada(s):
     else: return "None"
     # print(frase, 1)
 
-s = "."
-while s != "":
-    print(entrada(str(input())))
+# s = "."
+# while s != "":
+#     print(entrada(str(input())))
+
