@@ -1,6 +1,6 @@
 # SOFTWARE PRONOMINALITZADOR
 
-LLoc web on podeu provar el software: http://www.pronominalitza.cat/.
+LLoc web on podeu provar el software: http://www.pronominalitza.cat/. (PAGINA NO ACTIVA)
 Aquest treball fet amb python és un software que pronominalitza pronoms febles en català.
 Ha estat desenvolupat amb la llibreria Spacy i el model creat pel [BSC](https://github.com/TeMU-BSC/spacy)
 
